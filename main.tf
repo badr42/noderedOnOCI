@@ -31,13 +31,27 @@ resource "oci_core_instance" "instance" {
   # Add private key
   metadata = {
     ssh_authorized_keys = file(var.ssh_public_key_path)
-    user_data           = base64encode(file("setup-instance.sh"))
+    user_data           = base64encode(file("install.sh"))
   }
   shape_config {
         #Optional
         # memory_in_gbs = "16"
         memory_in_gbs = var.core_count*2 <16 ? 16 : var.core_count*2
         ocpus = var.core_count
+  }
+
+
+  connection {
+    type        = "ssh"
+    host        = "${self.public_ip}"
+    user        = "ubuntu"
+    private_key = "${file(var.ssh_private_key_path)}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'This instance was provisioned by Terraform.' > test-remote-exec.log",
+    ]
   }
 }
 
@@ -49,15 +63,15 @@ data "oci_identity_availability_domains" "ADs" {
 # Create internet gateway
 resource "oci_core_internet_gateway" "internet_gateway" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.openmpi_vcn.id
-  display_name   = "openmpi-internet-gateway"
+  vcn_id         = oci_core_virtual_network.nodered_vcn.id
+  display_name   = "nodered-internet-gateway"
 }
 
 # Create route table
-resource "oci_core_route_table" "openmpi_route_table" {
+resource "oci_core_route_table" "nodered_route_table" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.openmpi_vcn.id
-  display_name   = "openmpi-route-table"
+  vcn_id         = oci_core_virtual_network.nodered_vcn.id
+  display_name   = "nodered-route-table"
   route_rules {
     destination = "0.0.0.0/0"
     network_entity_id = oci_core_internet_gateway.internet_gateway.id
@@ -65,10 +79,10 @@ resource "oci_core_route_table" "openmpi_route_table" {
 }
 
 # Create security list with ingress and egress rules
-resource "oci_core_security_list" "openmpi_security_list" {
+resource "oci_core_security_list" "nodered_security_list" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.openmpi_vcn.id
-  display_name   = "openmpi-security-list"
+  vcn_id         = oci_core_virtual_network.nodered_vcn.id
+  display_name   = "nodered-security-list"
 
   egress_security_rules {
     destination = "0.0.0.0/0"
@@ -98,24 +112,26 @@ resource "oci_core_security_list" "openmpi_security_list" {
 resource "oci_core_subnet" "subnet" {
   cidr_block        = var.subnet_cidr
   compartment_id    = var.compartment_ocid
-  display_name      = "openmpi-subnet"
-  vcn_id            = oci_core_virtual_network.openmpi_vcn.id
-  route_table_id    = oci_core_route_table.openmpi_route_table.id
-  security_list_ids = ["${oci_core_security_list.openmpi_security_list.id}"]
-  dhcp_options_id   = oci_core_virtual_network.openmpi_vcn.default_dhcp_options_id
+  display_name      = "nodered-subnet"
+  vcn_id            = oci_core_virtual_network.nodered_vcn.id
+  route_table_id    = oci_core_route_table.nodered_route_table.id
+  security_list_ids = ["${oci_core_security_list.nodered_security_list.id}"]
+  dhcp_options_id   = oci_core_virtual_network.nodered_vcn.default_dhcp_options_id
 }
 
 # Create a virtual network
-resource "oci_core_virtual_network" "openmpi_vcn" {
+resource "oci_core_virtual_network" "nodered_vcn" {
   cidr_block     = var.vcn_cidr
   compartment_id = var.compartment_ocid
-  display_name   = "openmpi-vcn"
+  display_name   = "nodered-vcn"
 }
 
 output "instance_public_ip" {
   value = <<EOF
   
-  Wait 25 minutes for the instance to be ready.
+  Wait 5 minutes for the instance to be ready.
+
+  login into http://${oci_core_instance.instance.public_ip}:1880
 
   ssh -i server.key ubuntu@${oci_core_instance.instance.public_ip}
   

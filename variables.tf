@@ -17,6 +17,9 @@ variable "region" {
 variable "ssh_public_key_path" {
   description = ""
 }
+variable "ssh_private_key_path" {
+  description = ""
+}
 
 variable "subnet_cidr" {
   description = ""
@@ -27,7 +30,8 @@ variable "vcn_cidr" {
 }
 
 variable "core_count" {
-  description = ""
+  description = "core count"
+  default     = 1
 }
 
 variable "AD_number" {
