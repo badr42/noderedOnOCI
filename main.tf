@@ -56,7 +56,7 @@ resource "oci_core_instance" "instance" {
     inline = [
       "export TP=${var.Node_red_pass}",
       "wget -O - https://raw.githubusercontent.com/badr42/noderedOnOCI/main/install.sh | bash",
-      "sudo nohup node-red-reload &",
+      "nohup node-red-reload &",
     ]
   }
 }
