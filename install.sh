@@ -15,6 +15,21 @@ sudo apt-get install -y vim
 curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init
 
 
+
+sudo systemctl enable nodered.service
+
+
+# Install Mosquitto
+sudo apt-get update
+sudo apt-get install -y mosquitto mosquitto-clients
+
+# Enable Mosquitto to start at boot
+sudo systemctl enable mosquitto
+
+
+
+##set password for nodered
+
 if [ -z "$TP" ]; then
     export TP=aGoodPassword
 fi
@@ -32,20 +47,10 @@ fi
 
 
 
-sudo systemctl enable nodered.service
-
-
-# Install Mosquitto
-sudo apt-get update
-sudo apt-get install -y mosquitto mosquitto-clients
-
-# Enable Mosquitto to start at boot
-sudo systemctl enable mosquitto
-
-node-red-reload
+nohup node-red-reload &
 
 # Show Mosquitto status
-sudo systemctl status mosquitto
+#sudo systemctl status mosquitto
 
 # Show Node-RED status
-sudo systemctl status nodered
+#sudo systemctl status nodered
