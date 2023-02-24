@@ -13,10 +13,14 @@ sudo iptables -F
 
 sudo apt-get install -y vim
 
+#sudo apt install -y npm
+#sudo apt-get install --only-upgrade nodejs
+
+
 
 # Install Node-RED
 #sudo bash
-curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init
+curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init --node18
 
 
 
