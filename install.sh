@@ -23,6 +23,12 @@ sudo systemctl enable nodered.service
 sudo apt-get update
 sudo apt-get install -y mosquitto mosquitto-clients
 
+###replace mosquitto conf
+cd /etc/mosquitto
+sudo mv mosquitto.conf mosquitto.conf_backup
+sudo wget https://raw.githubusercontent.com/badr42/noderedOnOCI/main/mosquitto.conf 
+sudo systemctl restart mosquitto
+
 # Enable Mosquitto to start at boot
 sudo systemctl enable mosquitto
 
@@ -42,8 +48,10 @@ export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 
 # Enable Node-RED security and set password
 if [ -n "$pass" ]; then
 #    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
-    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' ~/.node-red/settings.js
+    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' vi
 fi
+
+
 
 
 
