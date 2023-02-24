@@ -57,7 +57,7 @@ fi
 
 
 
-
+sleep 2
 
 nohup node-red-reload &
 
