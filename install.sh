@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+echo "waiting for the network set up to complete"
+sleep 10
+
+
 # Allow the firewall
 sudo iptables -P INPUT ACCEPT
 sudo iptables -P OUTPUT ACCEPT
@@ -48,7 +52,7 @@ export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 
 # Enable Node-RED security and set password
 if [ -n "$pass" ]; then
 #    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
-    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' vi
+    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' ~/.node-red/settings.js
 fi
 
 
