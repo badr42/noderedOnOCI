@@ -6,6 +6,7 @@ variable "instance_name" {
   description = ""
 }
 
+
 variable "instance_shape" {
   description = ""
 }
@@ -38,4 +39,9 @@ variable "AD_number" {
   type          = number
   description   = ""
   default       = 0
+}
+
+
+variable "Node_red_pass" {
+  description = "Node Red Admin password"
 }
