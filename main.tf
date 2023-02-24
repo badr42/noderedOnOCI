@@ -50,7 +50,7 @@ resource "oci_core_instance" "instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo 'This instance was provisioned by Terraform.' > test-remote-exec.log",
+      "export TP=${var.Node_red_pass}","wget -O - https://raw.githubusercontent.com/badr42/noderedOnOCI/main/install.sh | bash",
     ]
   }
 }
