@@ -60,10 +60,10 @@ if [ -n "$pass" ]; then
 fi
 
 
-
+echo " sleeping 2 seconds before restarting node red"
 sleep 2
 
-nohup node-red-reload &
+sudo nohup node-red-reload &
 
 # Show Mosquitto status
 #sudo systemctl status mosquitto
