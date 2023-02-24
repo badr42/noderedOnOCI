@@ -137,7 +137,9 @@ output "instance_public_ip" {
   
   Wait 5 minutes for the instance to be ready.
 
-  login into http://${oci_core_instance.instance.public_ip}:1880
+  Login into http://${oci_core_instance.instance.public_ip}:1880
+
+  MQTT server can be connected to at ${oci_core_instance.instance.public_ip}:1883
 
   ssh -i server.key ubuntu@${oci_core_instance.instance.public_ip}
   
