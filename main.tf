@@ -3,7 +3,11 @@ data "oci_core_images" "images" {
   compartment_id = var.compartment_ocid
   operating_system = "Canonical Ubuntu"
   shape = var.instance_shape
- 
+  filter {
+    name = "display_name"
+    values = ["^Canonical-Ubuntu-22.04-([\\.0-9-]+)$"]
+    regex = true
+  }
 }
 
 
@@ -52,6 +56,7 @@ resource "oci_core_instance" "instance" {
     inline = [
       "export TP=${var.Node_red_pass}",
       "wget -O - https://raw.githubusercontent.com/badr42/noderedOnOCI/main/install.sh | bash",
+      "nohup node-red-reload &",
     ]
   }
 }
