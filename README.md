@@ -15,7 +15,7 @@ One of the main benefits of using Mosquitto is its efficiency. It is designed to
 
 ## Architecture
 
-![results](https://github.com/badr42/oke_A1/blob/main/images/architecture.png)
+![results](https://github.com/badr42/noderedOnOCI/blob/main/images/arch.png)
 
 ## Requirements
 
@@ -52,8 +52,8 @@ terraform apply
 ```
 
 
-**After applying, the service will be ready in about 25 minutes** (it will install OS dependencies, as well as the packages needed to get openMPI to work)
+**After applying, the service will be ready in about 5 minutes** (it will install OS dependencies, as well as the packages needed to get openMPI to work)
 
 ## Post configuration
 
-To test the app ssh to the machine and run one of the test algorithms pre-loaded to the environment 
+You can use MQTTBox chrome client to test MQTT
