@@ -20,7 +20,7 @@ sudo apt-get install -y vim
 
 # Install Node-RED
 sudo su - ubuntu
-curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init --node18
+runuser -l ubuntu  -c 'curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init --node18'
 
 
 
