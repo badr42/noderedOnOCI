@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+
+
 echo "waiting for the network set up to complete"
 sleep 10
 
