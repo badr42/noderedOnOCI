@@ -37,7 +37,7 @@ sudo wget -O /lib/systemd/system/nodered.service https://raw.githubusercontent.c
 sleep 10
 
 sudo systemctl daemon-reload
-sudo systemctl restart nodered.service
+
 
 
 
@@ -60,6 +60,8 @@ sudo systemctl enable mosquitto
 
 ##set password for nodered
 
+TP=$1
+
 if [ -z "$TP" ]; then
     export TP=aGoodPassword
 fi
@@ -71,7 +73,7 @@ export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 
 
 
 # check if file exists if not create it 
- [[ ! -f /home/ubuntu/.node-red/settings.js ]] && wget -P /home/ubuntu/.node-red/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/settings.js
+ [[ ! -f r ]] && wget -P /home/ubuntu/.node-red/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/settings.js
 
 
 
@@ -89,7 +91,7 @@ echo "Sleeping 2 seconds before restarting node red"
 sleep 2
 
 
-
+sudo systemctl restart nodered.service
 nohup node-red-reload &
 
 echo "Completed setup"
