@@ -26,7 +26,21 @@ runuser -l ubuntu  -c 'curl -sL https://raw.githubusercontent.com/node-red/linux
 
 
 
+
+
 sudo systemctl enable nodered.service
+
+
+# replace the service file 
+sudo rm /lib/systemd/system/nodered.service
+sudo wget -PO /lib/systemd/system/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
+sleep 10
+
+sudo systemctl daemon-reload
+sudo systemctl restart nodered.service
+
+
+
 
 
 # Install Mosquitto
@@ -57,34 +71,23 @@ export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 
 
 
 # check if file exists if not create it 
-# [[ ! -f /root/.node-red/settings.js ]] && wget -P /root/.node-red/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/settings.js
+ [[ ! -f /home/ubuntu/.node-red/settings.js ]] && wget -P /home/ubuntu/.node-red/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/settings.js
+
 
 
 
 # Enable Node-RED security and set password
-if [ -n "$pass" ]; then
-#    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
+if [ -n "c" ]; then
     sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' /home/ubuntu/.node-red/settings.js
 fi
 
-# just in case its in root
-# Enable Node-RED security and set password
-if [ -n "$pass" ]; then
-#    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
-    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' /root/.node-red/settings.js
-fi
+
 
 
 
 echo "Sleeping 2 seconds before restarting node red"
 sleep 2
 
-# replace the service file 
-sudo wget -P /lib/systemd/system/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
-sleep 10
-
-sudo systemctl daemon-reload
-sudo systemctl restart nodered.service
 
 
 nohup node-red-reload &
