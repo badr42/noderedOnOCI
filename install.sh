@@ -19,7 +19,7 @@ sudo apt-get install -y vim
 
 
 # Install Node-RED
-sudo su - ubuntu
+# sudo su - ubuntu
 runuser -l ubuntu  -c 'curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered | bash -s -- --confirm-install --skip-pi --restart --confirm-root --no-init --node18'
 
 
@@ -59,9 +59,23 @@ if [ -n "$pass" ]; then
     sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' ~/.node-red/settings.js
 fi
 
+# just in case its in root
+# Enable Node-RED security and set password
+if [ -n "$pass" ]; then
+#    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
+    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' /root/.node-red/settings.js
+fi
+
+
 
 echo "Sleeping 2 seconds before restarting node red"
 sleep 2
+
+# replace the service file 
+sudo wget -P /lib/systemd/system/nodered.service https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
+sudo systemctl daemon-reload
+sudo systemctl restart nodered.service
+
 
 nohup node-red-reload &
 
