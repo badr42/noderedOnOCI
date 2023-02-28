@@ -55,6 +55,12 @@ cd /usr/lib/node_modules/node-red/node_modules/
 export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 8));" $TP`
 
 
+
+# check if file exists if not create it 
+# [[ ! -f /root/.node-red/settings.js ]] && wget -P /root/.node-red/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/settings.js
+
+
+
 # Enable Node-RED security and set password
 if [ -n "$pass" ]; then
 #    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
@@ -74,7 +80,7 @@ echo "Sleeping 2 seconds before restarting node red"
 sleep 2
 
 # replace the service file 
-sudo wget -P /lib/systemd/system/nodered.service https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
+sudo wget -P /lib/systemd/system/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
 sudo systemctl daemon-reload
 sudo systemctl restart nodered.service
 
