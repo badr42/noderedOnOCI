@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+sudo su - 
 
 
 echo "waiting for the network set up to complete"
@@ -33,7 +33,7 @@ sudo systemctl enable nodered.service
 
 # replace the service file 
 sudo rm /lib/systemd/system/nodered.service
-sudo wget -PO /lib/systemd/system/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
+sudo wget -O /lib/systemd/system/nodered.service https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
 sleep 10
 
 sudo systemctl daemon-reload
