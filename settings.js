@@ -1,5 +1,5 @@
 /**
- * Node-RED Settings created at Tue, 28 Feb 2023 20:16:03 GMT
+ * This is the default settings file provided by Node-RED.
  *
  * It can contain any valid JavaScript code that will get run when Node-RED
  * is started.
@@ -32,7 +32,7 @@ module.exports = {
      ******************************************************************************/
     
         /** The file containing the flows. If not set, defaults to flows_<hostname>.json **/
-        flowFile: "flows.json",
+        flowFile: 'flows.json',
     
         /** By default, credentials are encrypted in storage using a generated key. To
          * specify your own secret, set the following property.
@@ -41,7 +41,7 @@ module.exports = {
          * node-red from being able to decrypt your existing credentials and they will be
          * lost.
          */
-        credentialSecret: false,
+        //credentialSecret: "a-secret-key",
     
         /** By default, the flow JSON will be formatted over multiple lines making
          * it easier to compare changes when using version control.
@@ -70,17 +70,17 @@ module.exports = {
      *  - httpStaticAuth
      ******************************************************************************/
     
-    /** To password protect the Node-RED editor and admin API, the following
-     * property can be used. See http://nodered.org/docs/security.html for details.
-     */
-    //adminAuth: {
-    //    type: "credentials",
-    //    users: [{
-    //        username: "admin",
-    //        password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
-    //        permissions: "*"
-    //    }]
-    //},
+        /** To password protect the Node-RED editor and admin API, the following
+         * property can be used. See http://nodered.org/docs/security.html for details.
+         */
+        //adminAuth: {
+        //    type: "credentials",
+        //    users: [{
+        //        username: "admin",
+        //        password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
+        //        permissions: "*"
+        //    }]
+        //},
     
         /** The following property can be used to enable HTTPS
          * This property can be either an object, containing both a (private) key
@@ -137,7 +137,7 @@ module.exports = {
      *  - httpNodeCors
      *  - httpNodeMiddleware
      *  - httpStatic
-     * - httpStaticRoot
+     *  - httpStaticRoot
      ******************************************************************************/
     
         /** the tcp port that the Node-RED web server is listening on */
@@ -242,83 +242,113 @@ module.exports = {
     /*******************************************************************************
      * Runtime Settings
      *  - lang
+     *  - runtimeState
+     *  - diagnostics
      *  - logging
      *  - contextStorage
      *  - exportGlobalContextKeys
      *  - externalModules
      ******************************************************************************/
     
-         /** Uncomment the following to run node-red in your preferred language.
-          * Available languages include: en-US (default), ja, de, zh-CN, zh-TW, ru, ko
-          * Some languages are more complete than others.
-          */
-         // lang: "de",
+        /** Uncomment the following to run node-red in your preferred language.
+         * Available languages include: en-US (default), ja, de, zh-CN, zh-TW, ru, ko
+         * Some languages are more complete than others.
+         */
+        // lang: "de",
     
-         /** Configure the logging output */
-         logging: {
-             /** Only console logging is currently supported */
-             console: {
-                 /** Level of logging to be recorded. Options are:
-                  * fatal - only those errors which make the application unusable should be recorded
-                  * error - record errors which are deemed fatal for a particular request + fatal errors
-                  * warn - record problems which are non fatal + errors + fatal errors
-                  * info - record information about the general running of the application + warn + error + fatal errors
-                  * debug - record information which is more verbose than info + info + warn + error + fatal errors
-                  * trace - record very detailed logging + debug + info + warn + error + fatal errors
-                  * off - turn off all logging (doesn't affect metrics or audit)
-                  */
-                 level: "info",
-                 /** Whether or not to include metric events in the log output */
-                 metrics: false,
-                 /** Whether or not to include audit events in the log output */
-                 audit: false
-             }
-         },
+        /** Configure diagnostics options 
+         * - enabled:  When `enabled` is `true` (or unset), diagnostics data will
+         *   be available at http://localhost:1880/diagnostics  
+         * - ui: When `ui` is `true` (or unset), the action `show-system-info` will 
+         *   be available to logged in users of node-red editor  
+        */
+        diagnostics: {
+            /** enable or disable diagnostics endpoint. Must be set to `false` to disable */
+            enabled: true,
+            /** enable or disable diagnostics display in the node-red editor. Must be set to `false` to disable */
+            ui: true,
+        },
+        /** Configure runtimeState options 
+         * - enabled:  When `enabled` is `true` flows runtime can be Started/Stoped 
+         *   by POSTing to available at http://localhost:1880/flows/state  
+         * - ui: When `ui` is `true`, the action `core:start-flows` and 
+         *   `core:stop-flows` will be available to logged in users of node-red editor
+         *   Also, the deploy menu (when set to default) will show a stop or start button
+         */
+        runtimeState: {
+            /** enable or disable flows/state endpoint. Must be set to `false` to disable */
+            enabled: false,
+            /** show or hide runtime stop/start options in the node-red editor. Must be set to `false` to hide */
+            ui: false,
+        },
+        /** Configure the logging output */
+        logging: {
+            /** Only console logging is currently supported */
+            console: {
+                /** Level of logging to be recorded. Options are:
+                 * fatal - only those errors which make the application unusable should be recorded
+                 * error - record errors which are deemed fatal for a particular request + fatal errors
+                 * warn - record problems which are non fatal + errors + fatal errors
+                 * info - record information about the general running of the application + warn + error + fatal errors
+                 * debug - record information which is more verbose than info + info + warn + error + fatal errors
+                 * trace - record very detailed logging + debug + info + warn + error + fatal errors
+                 * off - turn off all logging (doesn't affect metrics or audit)
+                 */
+                level: "info",
+                /** Whether or not to include metric events in the log output */
+                metrics: false,
+                /** Whether or not to include audit events in the log output */
+                audit: false
+            }
+        },
     
-         /** Context Storage
-          * The following property can be used to enable context storage. The configuration
-          * provided here will enable file-based context that flushes to disk every 30 seconds.
-          * Refer to the documentation for further options: https://nodered.org/docs/api/context/
-          */
-         //contextStorage: {
-         //    default: {
-         //        module:"localfilesystem"
-         //    },
-         //},
+        /** Context Storage
+         * The following property can be used to enable context storage. The configuration
+         * provided here will enable file-based context that flushes to disk every 30 seconds.
+         * Refer to the documentation for further options: https://nodered.org/docs/api/context/
+         */
+        //contextStorage: {
+        //    default: {
+        //        module:"localfilesystem"
+        //    },
+        //},
     
-         /** `global.keys()` returns a list of all properties set in global context.
-          * This allows them to be displayed in the Context Sidebar within the editor.
-          * In some circumstances it is not desirable to expose them to the editor. The
-          * following property can be used to hide any property set in `functionGlobalContext`
-          * from being list by `global.keys()`.
-          * By default, the property is set to false to avoid accidental exposure of
-          * their values. Setting this to true will cause the keys to be listed.
-          */
-         exportGlobalContextKeys: false,
+        /** `global.keys()` returns a list of all properties set in global context.
+         * This allows them to be displayed in the Context Sidebar within the editor.
+         * In some circumstances it is not desirable to expose them to the editor. The
+         * following property can be used to hide any property set in `functionGlobalContext`
+         * from being list by `global.keys()`.
+         * By default, the property is set to false to avoid accidental exposure of
+         * their values. Setting this to true will cause the keys to be listed.
+         */
+        exportGlobalContextKeys: false,
     
-         /** Configure how the runtime will handle external npm modules.
-          * This covers:
-          *  - whether the editor will allow new node modules to be installed
-          *  - whether nodes, such as the Function node are allowed to have their
-          * own dynamically configured dependencies.
-          * The allow/denyList options can be used to limit what modules the runtime
-          * will install/load. It can use '*' as a wildcard that matches anything.
-          */
-         externalModules: {
-             // autoInstall: false,   /** Whether the runtime will attempt to automatically install missing modules */
-             // autoInstallRetry: 30, /** Interval, in seconds, between reinstall attempts */
-             // palette: {              /** Configuration for the Palette Manager */
-             //     allowInstall: true, /** Enable the Palette Manager in the editor */
-             //     allowUpload: true,  /** Allow module tgz files to be uploaded and installed */
-             //     allowList: [],
-             //     denyList: []
-             // },
-             // modules: {              /** Configuration for node-specified modules */
-             //     allowInstall: true,
-             //     allowList: [],
-             //     denyList: []
-             // }
-         },
+        /** Configure how the runtime will handle external npm modules.
+         * This covers:
+         *  - whether the editor will allow new node modules to be installed
+         *  - whether nodes, such as the Function node are allowed to have their
+         * own dynamically configured dependencies.
+         * The allow/denyList options can be used to limit what modules the runtime
+         * will install/load. It can use '*' as a wildcard that matches anything.
+         */
+        externalModules: {
+            // autoInstall: false,   /** Whether the runtime will attempt to automatically install missing modules */
+            // autoInstallRetry: 30, /** Interval, in seconds, between reinstall attempts */
+            // palette: {              /** Configuration for the Palette Manager */
+            //     allowInstall: true, /** Enable the Palette Manager in the editor */
+            //     allowUpdate: true,  /** Allow modules to be updated in the Palette Manager */
+            //     allowUpload: true,  /** Allow module tgz files to be uploaded and installed */
+            //     allowList: ['*'],
+            //     denyList: [],
+            //     allowUpdateList: ['*'],
+            //     denyUpdateList: []
+            // },
+            // modules: {              /** Configuration for node-specified modules */
+            //     allowInstall: true,
+            //     allowList: [],
+            //     denyList: []
+            // }
+        },
     
     
     /*******************************************************************************
@@ -343,6 +373,12 @@ module.exports = {
              * a collection of themes to chose from.
              */
             //theme: "",
+    
+            /** To disable the 'Welcome to Node-RED' tour that is displayed the first
+             * time you access the editor for each release of Node-RED, set this to false
+             */
+            //tours: false,
+    
             palette: {
                 /** The following property can be used to order the categories in the editor
                  * palette. If a node's category is not in the list, the category will get
@@ -351,6 +387,7 @@ module.exports = {
                  */
                 //categories: ['subflows', 'common', 'function', 'network', 'sequence', 'parser', 'storage'],
             },
+    
             projects: {
                 /** To enable the Projects feature, set this value to true */
                 enabled: false,
@@ -364,6 +401,7 @@ module.exports = {
                     mode: "manual"
                 }
             },
+    
             codeEditor: {
                 /** Select the text editor component used by the editor.
                  * As of Node-RED V3, this defaults to "monaco", but can be set to "ace" if desired
@@ -376,7 +414,7 @@ module.exports = {
                      * packages/node_modules/@node-red/editor-client/src/vendor/monaco/dist/theme
                      * e.g. "tomorrow-night", "upstream-sunburst", "github", "my-theme"
                      */
-                    theme: "vs",
+                    // theme: "vs",
                     /** other overrides can be set e.g. fontSize, fontFamily, fontLigatures etc.
                      * for the full list, see https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IStandaloneEditorConstructionOptions.html
                      */
