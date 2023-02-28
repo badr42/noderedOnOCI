@@ -64,7 +64,7 @@ export pass=`node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 
 # Enable Node-RED security and set password
 if [ -n "$pass" ]; then
 #    sudo sed -i 's/^\(\s*\/\/\?\s*credentialSecret\s*:\s*\).*/\1"'$NR_PASS'";/' /root/.node-red/settings.js
-    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' ~/.node-red/settings.js
+    sed -i '/^\(\s*\/\/\?\s*adminAuth\s*:\s*\){/!b;n;c\    adminAuth: {\n        type: "credentials",\n        users: [{\n            username: "admin",\n            password: "'"$pass"'",\n            permissions: "*"\n        }]\n    },' /home/ubuntu/.node-red/settings.js
 fi
 
 # just in case its in root
@@ -81,6 +81,8 @@ sleep 2
 
 # replace the service file 
 sudo wget -P /lib/systemd/system/ https://raw.githubusercontent.com/badr42/noderedOnOCI/main/nodered.service
+sleep 10
+
 sudo systemctl daemon-reload
 sudo systemctl restart nodered.service
 
