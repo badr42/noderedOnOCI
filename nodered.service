@@ -8,8 +8,8 @@ Documentation=http://nodered.org/docs/hardware/raspberrypi.html
 [Service]
 Type=simple
 # Run as normal pi user - change to the user name you wish to run Node-RED as
-User=ubuntu
-Group=ubuntu
+User=root
+Group=root
 WorkingDirectory=/home/ubuntu
 
 Environment="NODE_OPTIONS=--max_old_space_size=2048"
